@@ -66,7 +66,7 @@ def time_left(full_inp):
     target_time_zone = pytz.timezone('Asia/Kolkata')
     target_date_with_timezone = noxw.astimezone(target_time_zone)
     left = full_inp - target_date_with_timezone
-    return left, target_date_with_timezone
+    return left
 
 
 def _convert_to_local(file):
@@ -86,16 +86,17 @@ def _convert_to_local(file):
             source_min = data[4]
             source_time = datetime(2020, int(source_mon), int(source_day), int(source_hour), int(source_min), 00, 0000)
             source_date_with_timezone = source_time_zone.localize(source_time)
-            # print(type(source_date_with_timezone))
+            #print(type(source_date_with_timezone))
             val = time_left(source_date_with_timezone)
-            # print(val, type(val))
-            if val[0].days < 0:
+            target_time_zone = pytz.timezone('Asia/Kolkata')
+            writt = source_date_with_timezone.astimezone(target_time_zone)
+            f.write('{},{},{},{}{}'.format(writt.strftime("%m,%d"), data[2],
+                                           writt.strftime("%H,%M"), data[5], '\n'))
+            #print(val,type(val))
+            if val.days < 0:
                 print(data[5], ':', "Over")
             else:
-                print(data[5], ':', val[0].seconds)
-            f.write('{},{},{},{}{}'.format(val[1].strftime("%m,%d"), data[2],
-                                           val[1].strftime("%H,%M"), data[5], '\n'))
-
+                print(data[5], ':', val)
 
 def main():
     file = glob.glob('./*.html')
