@@ -4,7 +4,7 @@ import os
 import re
 import shutil
 from datetime import datetime
-
+from tabulate import tabulate
 import pytz
 import wget
 from bs4 import BeautifulSoup as _soup_
@@ -71,8 +71,10 @@ def time_left(full_inp):
 
 def _convert_to_local(file):
     print('\n\n', '*' * 10)
+    l= []
     f = open("export_local.csv", "w", encoding='utf8')
     f.write('MON,DAY,ID,HR,MN,NAME\n')
+    #kek = open('names.txt','w')
     with open(file, 'r') as sch:
         # inp = sch.read()
         source_time_zone = pytz.timezone("Asia/Tokyo")
@@ -94,9 +96,12 @@ def _convert_to_local(file):
                                            writt.strftime("%H,%M"), data[5], '\n'))
             #print(val,type(val))
             if val.days < 0:
-                print(data[5], ':', "Over")
+                l.append([data[5],"Over"])
             else:
-                print(data[5], ':', val)
+                l.append([data[5],val])
+            #kek.write(str(data[5])+'\n')
+    table = tabulate(l, headers=['Name', 'Status'], tablefmt="plain")
+    print(table)
 
 def main():
     file = glob.glob('./*.html')
@@ -119,10 +124,12 @@ def main():
         diff = now - made_on_tOBJ
         print('Seconds Since made:', diff.seconds)
         if diff.seconds >= 43200:
+            print("Refreshing local Copy")
             os.makedirs("OLD COPIES", exist_ok=True)
             new = os.path.join("OLD COPIES", file)
             shutil.move(file, new)
-            check_start('{}{}'.format(name_f, '.html'), True)
+            file = name_f+'.html'
+            check_start(file, True)
             main()
     start_reading(str(file))
     _convert_to_local('export.csv')
