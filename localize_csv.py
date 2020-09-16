@@ -2,20 +2,15 @@ import csv
 from datetime import datetime
 
 import pytz
-
-
-def time_left(full_inp):
-    noxw = datetime.now()
-    target_time_zone = pytz.timezone('Asia/Kolkata')
-    target_date_with_timezone = noxw.astimezone(target_time_zone)
-    left = full_inp - target_date_with_timezone
-    return left
+from tabulate import tabulate
 
 
 def _convert_to_local(file):
     print('\n\n', '*' * 10)
+    l = []
     f = open("export_local.csv", "w", encoding='utf8')
     f.write('MON,DAY,ID,HR,MN,NAME\n')
+    # kek = open('names.txt','w')
     with open(file, 'r') as sch:
         # inp = sch.read()
         source_time_zone = pytz.timezone("Asia/Tokyo")
@@ -29,19 +24,25 @@ def _convert_to_local(file):
             source_min = data[4]
             source_time = datetime(2020, int(source_mon), int(source_day), int(source_hour), int(source_min), 00, 0000)
             source_date_with_timezone = source_time_zone.localize(source_time)
-            #print(type(source_date_with_timezone))
+            # print(type(source_date_with_timezone))
             val = time_left(source_date_with_timezone)
             target_time_zone = pytz.timezone('Asia/Kolkata')
             writt = source_date_with_timezone.astimezone(target_time_zone)
             f.write('{},{},{},{}{}'.format(writt.strftime("%m,%d"), data[2],
                                            writt.strftime("%H,%M"), data[5], '\n'))
-            #print(val,type(val))
+            # print(val,type(val))
             if val.days < 0:
-                print(data[5], ':', "Over")
+                l.append([data[5], "Over"])
             else:
-                print(data[5], ':', val)
+                l.append([data[5], val])
+            # kek.write(str(data[5])+'\n')
+    table = tabulate(l, headers=['Name', 'Status'], tablefmt="plain")
+    return table
 
 
-
-_convert_to_local('export.csv')
-
+def time_left(full_inp):
+    now_ = datetime.now()
+    target_time_zone = pytz.timezone('Asia/Kolkata')
+    target_date_with_timezone = now_.astimezone(target_time_zone)
+    left = full_inp - target_date_with_timezone
+    return left
