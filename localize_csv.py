@@ -10,7 +10,6 @@ def _convert_to_local(file):
     l = []
     f = open("export_local.csv", "w", encoding='utf8')
     f.write('MON,DAY,ID,HR,MN,NAME\n')
-    # kek = open('names.txt','w')
     with open(file, 'r') as sch:
         # inp = sch.read()
         source_time_zone = pytz.timezone("Asia/Tokyo")
@@ -35,7 +34,7 @@ def _convert_to_local(file):
                 l.append([data[5], "Over"])
             else:
                 l.append([data[5], val])
-            # kek.write(str(data[5])+'\n')
+
     table = tabulate(l, headers=['Name', 'Status'], tablefmt="plain")
     return table
 
@@ -46,3 +45,15 @@ def time_left(full_inp):
     target_date_with_timezone = now_.astimezone(target_time_zone)
     left = full_inp - target_date_with_timezone
     return left
+
+
+def write_names(file):
+    with open(file, 'r') as sch:
+        kek = open('names.txt', 'a')
+        reader = csv.DictReader(sch)
+        for row in reader:
+            data = row['NAME']
+            kek.write(str(data) + '\n')
+        kek.close()
+
+# write_names('export.csv')
