@@ -32,6 +32,7 @@ def _convert_to_local(file):
             # print(val,type(val))
             if val.days < 0:
                 l.append([data[5], "Over"])
+                #l.append(u'{:\u3000>8s}'.format(u str(data[5])))
             else:
                 l.append([data[5], val])
 
@@ -47,13 +48,3 @@ def time_left(full_inp):
     return left
 
 
-def write_names(file):
-    with open(file, 'r') as sch:
-        kek = open('names.txt', 'a')
-        reader = csv.DictReader(sch)
-        for row in reader:
-            data = row['NAME']
-            kek.write(str(data) + '\n')
-        kek.close()
-
-# write_names('export.csv')
