@@ -6,8 +6,8 @@ from tabulate import tabulate
 
 
 def _convert_to_local(file):
-    print('\n\n', '*' * 10)
-    l = []
+    print('\n', '*' * 25)
+    list_table = []
     f = open("export_local.csv", "w", encoding='utf8')
     f.write('MON,DAY,ID,HR,MN,NAME\n')
     with open(file, 'r') as sch:
@@ -26,17 +26,17 @@ def _convert_to_local(file):
             # print(type(source_date_with_timezone))
             val = time_left(source_date_with_timezone)
             target_time_zone = pytz.timezone('Asia/Kolkata')
-            writt = source_date_with_timezone.astimezone(target_time_zone)
-            f.write('{},{},{},{}{}'.format(writt.strftime("%m,%d"), data[2],
-                                           writt.strftime("%H,%M"), data[5], '\n'))
+            writer = source_date_with_timezone.astimezone(target_time_zone)
+            f.write('{},{},{},{}{}'.format(writer.strftime("%m,%d"), data[2],
+                                           writer.strftime("%H,%M"), data[5], '\n'))
             # print(val,type(val))
             if val.days < 0:
-                l.append([data[5], "Over"])
+                list_table.append([data[5], "Over"])
                 #l.append(u'{:\u3000>8s}'.format(u str(data[5])))
             else:
-                l.append([data[5], val])
+                list_table.append([data[5], val])
 
-    table = tabulate(l, headers=['Name', 'Status'], tablefmt="plain")
+    table = tabulate(list_table, headers=['Name', 'Status'], tablefmt="plain")
     return table
 
 

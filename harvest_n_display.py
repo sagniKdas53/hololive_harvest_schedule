@@ -3,7 +3,7 @@ from datetime import datetime
 from get_page import make_file_html, pre_read_check
 from read_and_make_csv import start_reading
 from localize_csv import _convert_to_local
-# from de_nihongfi import translate_export
+from de_nihongfi import translate_export
 
 file_glob = glob.glob('./*.html')
 now = datetime.now()
@@ -18,6 +18,6 @@ except IndexError:
 
 checked_f = pre_read_check(file_name, now)
 start_reading(checked_f)
-# translate_export('export.csv')
-out_pt = _convert_to_local('export.csv')
+translate_export('export_local.csv', 'names.txt', 'translate_names.txt')
+out_pt = _convert_to_local('export_local_translated.csv')
 print(out_pt)
