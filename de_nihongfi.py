@@ -35,12 +35,12 @@ def translate_export(file, orig, tran):
     final.close()
     # for name_data in name_list:
     # print(name_data[0],'\t',name_data[1])
-    dict_name = dict(name_list)
+    dict_name = dict(name_list)  # idk how to fix this
     for key, val in dict_name.items():
         for idx, ele in enumerate(total_data):
             if key in ele:
                 total_data[idx] = ele.replace(key, val)
-    write_it = open('export_local_translated.csv','w')
+    write_it = open('export_translated.csv','w')
     write_it.writelines(total_data)
     write_it.close()
 
