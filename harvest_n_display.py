@@ -5,6 +5,8 @@ from read_and_make_csv import start_reading
 from localize_csv import _convert_to_local
 from de_nihongfi import translate_export
 
+'''Here i will write the functions taht caould and would be imported in the bot finally'''
+
 file_glob = glob.glob('./*.html')
 now = datetime.now()
 name_f = str(now).replace(' ', '~')
@@ -18,6 +20,6 @@ except IndexError:
 
 checked_f = pre_read_check(file_name, now)
 start_reading(checked_f)
-translate_export('export_local.csv', 'names.txt', 'translate_names.txt')
+translate_export('export.csv', 'names.txt', 'translate_names.txt')
 out_pt = _convert_to_local('export_local_translated.csv')
 print(out_pt)

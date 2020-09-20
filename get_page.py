@@ -23,7 +23,8 @@ def make_file_html(file, force):
 
 
 def pre_read_check(source, time_o):
-    diff = datetime(1970, 1, 1)
+    diff = datetime(1970, 1, 1, 1, 0, 1) - datetime(1970, 1, 1, 1, 0, 0)
+    # print(diff.seconds)
     try:
         made_on = os.path.getctime(source)
         mod_tm = os.path.getmtime(source)
@@ -44,7 +45,7 @@ def pre_read_check(source, time_o):
         shutil.move(source, move_location)
         source = name_now + '.html'
         make_file_html(source, True)
-    if source == '':
+    if not os.path.exists(source):
         source = name_now + '.html'
         make_file_html(source, True)
     return str(source)
