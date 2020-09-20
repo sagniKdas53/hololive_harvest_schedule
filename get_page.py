@@ -1,7 +1,8 @@
-import wget
 import os
 import shutil
 from datetime import datetime
+
+import wget
 
 
 def is_file(url, file):
@@ -22,7 +23,7 @@ def make_file_html(file, force):
 
 
 def pre_read_check(source, time_o):
-    diff = 0
+    diff = datetime(1970, 1, 1)
     try:
         made_on = os.path.getctime(source)
         mod_tm = os.path.getmtime(source)
