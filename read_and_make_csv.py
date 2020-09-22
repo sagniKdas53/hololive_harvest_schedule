@@ -1,4 +1,5 @@
 import re
+
 from bs4 import BeautifulSoup as _soup_
 
 
@@ -15,13 +16,14 @@ def start_reading(file):
         day = dates.text.strip().replace(' ', '').split()
         day_list.append(day[0].split('/'))
     print("Schedule contains: ")
-    for month,day in day_list:
-        print("{}/{},".format(month,day),end='')
+    for month, day in day_list:
+        print("{}/{},".format(month, day), end='')
     f = open("export.csv", "w", encoding='utf8')
     f.write('MON,DAY,ID,HR,MN,NAME\n')
     for k in range(0, len(containers_link)):
-        match = re.findall(r'href="https:[//]*www\.youtube\.com/watch\?v=([0-9A-Za-z_-]{10}[048AEIMQUYcgkosw]*)',
+        match = re.findall(r'href=\"https:[//]*www\.youtube\.com/watch\?v=([0-9A-Za-z_-]{10}[048AEIMQUYcgkosw]*)\"',
                            str(containers_link[k]))[0]
+        # print(match)
         time_name = containers_link[k].text.replace(' ', '').split()
         hr = time_name[0].split(':')
         if int(hr[0]) != 23 and int(hr[1]) <= 59 and hold[0] == 23:
